@@ -11,6 +11,8 @@ const PORT = process.env.PORT;
 
 connectDB();
 
+app.use(express.json()); // Middleware to parse JSON bodies
+
 app.use("/api/notes", notesRoutes);
 
 app.listen(PORT, () => {
