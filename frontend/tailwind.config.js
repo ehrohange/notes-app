@@ -8,12 +8,6 @@ export default {
   },
   plugins: [daisyui],
   daisyui: {
-    themes: "bumblebee",
+    themes: ["bumblebee"],
   },
-  safelist: [
-    {
-      pattern: /data-theme/,
-    },
-    "data-theme=bumblebee",
-  ],
 };
