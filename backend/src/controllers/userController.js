@@ -1,13 +1,22 @@
-import User from "../model/User";
+import User from "../model/User.js";
+import bcrypt from "bcryptjs";
+import crypto from "crypto";
+import { sendEmail } from "../utils/mailer.js";
 
 export async function createUser(req, res) {
   const { email, firstName, lastName, password } = req.body;
   try {
-    const existing = User.findOne({ email });
-    if (existing)
-      return res.status(400).json({ message: "Email is already in use." });
 
-    const hashedPassword = bcrypt.hashSync(password, 10);
+    if (!email || !firstName || !lastName || !password) {
+        return res.status(400).json({message: "All fields are required."});
+    }
+
+    const existing = await User.findOne({ email });
+    if (existing) {
+      return res.status(400).json({ message: "Email is already in use." });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const verificationToken = crypto.randomBytes(32).toString("hex");
 
@@ -26,11 +35,11 @@ export async function createUser(req, res) {
       firstName,
       lastName,
       password: hashedPassword,
-      isVerified,
+      isVerified: false,
       verificationToken: verificationToken,
     });
 
-    return res.status(201).json({ message: "User has been created." });
+    return res.status(201).json({ message: "User has been created.", newUser });
   } catch (error) {
     console.error(error);
     return res
