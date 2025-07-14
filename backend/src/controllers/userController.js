@@ -22,7 +22,7 @@ export async function createUser(req, res) {
 
     console.log("Sending email to: ", email);
 
-    const verificationLink = `http://localhost:3000/api/verify?token=${verificationToken}`;
+    const verificationLink = `http://localhost:3000/api/auth/verify?token=${verificationToken}`;
 
     await sendEmail(
       email,
