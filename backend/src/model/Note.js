@@ -14,6 +14,7 @@ const noteSchema = new mongoose.Schema({
   },
 }, {
     timestamps: true, // Automatically manage createdAt and updatedAt fields
+    collection: "notes",
 });
 
 const Note = mongoose.model("Note", noteSchema);
