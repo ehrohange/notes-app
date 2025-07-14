@@ -18,7 +18,7 @@ export async function sendEmail(to, subject, html) {
   });
 
   const info = await transporter.sendMail({
-    from: `LearnZap <${process.env.GMAIL_USER}>`,
+    from: `Buzznotes <${process.env.GMAIL_USER}>`,
     to,
     subject,
     html,
