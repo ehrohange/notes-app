@@ -1,4 +1,4 @@
-import User from "../models/User";
+import User from "../model/User.js";
 
 export async function verifyUser(request, response) {
   try {

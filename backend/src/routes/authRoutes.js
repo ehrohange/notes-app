@@ -1,6 +1,7 @@
-import { verifyUser } from "../controllers/authController";
+import express from "express";
+import { verifyUser } from "../controllers/authController.js";
 
-const router = express.router();
+const router = express.Router()
 
 router.patch("/verify", verifyUser);
 
