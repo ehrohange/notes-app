@@ -3,6 +3,6 @@ import { verifyUser } from "../controllers/authController.js";
 
 const router = express.Router()
 
-router.patch("/verify", verifyUser);
+router.get("/verify", verifyUser);
 
 export default router;
