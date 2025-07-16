@@ -4,6 +4,10 @@ import mongoose from "mongoose";
 // 2 - Create a model using the schema
 
 const noteSchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    required: true,
+  },
   title: {
     type: String,
     required: true,
@@ -14,7 +18,7 @@ const noteSchema = new mongoose.Schema({
   },
 }, {
     timestamps: true, // Automatically manage createdAt and updatedAt fields
-    collection: "notes",
+    collection: "notesCollection",
 });
 
 const Note = mongoose.model("Note", noteSchema);
