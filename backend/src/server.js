@@ -7,7 +7,6 @@ import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js"
 import userRoutes from "./routes/userRoutes.js";
 import notesRoutes from "./routes/notesRoutes.js";
-import rateLimiter from "./middleware/rateLimiter.js";
 
 
 dotenv.config();
@@ -29,8 +28,6 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 app.use(express.json()); // Middleware to parse JSON bodies: req.body
-
-app.use(rateLimiter);
 
 // Custom middleware to log request details
 // app.use((req, res, next) => {
