@@ -1,21 +1,37 @@
 import { PlusIcon } from "lucide-react";
 import React from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
+  const location = useLocation();
+  const currentLocation = location.pathname.split("/").filter(Boolean).pop();
+
   return (
-    <header className="bg-neutral border-b-base-content/10">
+    <header className="border-b-base-content/10 mb-10">
       <div className="mx-auto max-w-6xl p-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-primary font-mono tracking-tighter">
-            Buzznote
-          </h1>
-          <div className="flex items-center gap-4">
-            <Link to={"/create"} className="btn btn-primary">
+          <Link to={`/`} className="flex items-center space-x-1">
+            <img
+              src="/icons/logo.webp"
+              alt="logo"
+              className="size-10 object-contain"
+            />
+            <h1
+              className="text-4xl font-bold text-primary tracking-tight pt-2"
+              style={{ textShadow: "0 2px 0 rgba(0, 0, 0, 0.5)" }}
+            >
+              Buzznotes
+            </h1>
+          </Link>
+          {
+            !currentLocation && <Link to={"/login"} className="btn btn-primary w-full max-w-40">
+            <span>Login</span>
+          </Link>
+          }
+          {currentLocation === "notes" && <Link to={"/create"} className="btn btn-primary">
             <PlusIcon className="size-5" />
             <span>New Buzz</span>
-            </Link>
-          </div>
+          </Link>}
         </div>
       </div>
     </header>
