@@ -1,63 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Navbar from "../components/Navbar";
-import RateLimitedUI from "../components/RateLimitedUI";
-import toast from "react-hot-toast";
-import NoteCard from "../components/NoteCard";
-import api from "../lib/axios";
-import NotesNotFound from "../components/NotesNotFound";
+import Footer from "../components/Footer";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
-  const [isRateLimited, setIsRateLimited] = useState(false);
-  const [notes, setNotes] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchNotes = async () => {
-      try {
-        const res = await api.get("/notes");
-        console.log(res.data);
-        setNotes(res.data);
-        setLoading(false);
-        setIsRateLimited(false);
-      } catch (error) {
-        console.error("Error fetching notes:", error);
-        if (error.response && error.response.status === 429) {
-          setIsRateLimited(true);
-        } else {
-          toast.error("Failed to fetch notes. Please try again later.");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchNotes();
-  }, []);
-
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      {isRateLimited && <RateLimitedUI />}
-      <div className="max-w-7xl mx-auto p-4 mt-6">
-        {loading && (
-          <div className="text-center text-primary py-10">Loading notes...</div>
-        )}
-        {
-          notes.length === 0 && !isRateLimited && (
-            <NotesNotFound />
-          )
-        }
-        {
-          notes.length > 0 && !isRateLimited && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {
-                notes.map((note) => (
-                  <NoteCard key={note._id} note={note} setNotes={setNotes} />
-                ))
-              }
-            </div>
-          )
-        }
+      <div className="flex-grow w-full max-w-6xl px-6 flex flex-col-reverse md:flex-row items-center justify-center gap-16 mx-auto py-10">
+        <img
+          src={`/graphics/graphic-1.webp`}
+          alt="graphic"
+          className="aspect-square max-w-96 md:size-1/2 md:max-w-none"
+        />
+        <div className="flex flex-col gap-5 text-center items-center md:text-start md:items-start">
+          <div className="flex flex-col text-neutral/90 text-4xl font-bold">
+            <h1>
+              Welcome to Buzznotes!
+            </h1>
+            <h1>
+              Notes That Stick Like Honey
+            </h1>
+          </div>
+          <p className="text-xl">
+            From quick thoughts to deep ideas, collect them all in your hive.
+            Sweet, simple, and always buzzing with productivity.
+          </p>
+
+          <Link to={"/login"} className="btn btn-primary w-full max-w-52 hover:scale-[1.05]">
+            <span>Get Started!</span>
+          </Link>
+        </div>
       </div>
+      <Footer />
     </div>
   );
 };
