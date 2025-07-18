@@ -1,9 +1,20 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { useSignIn } from "react-auth-kit";
+import { useNavigate } from "react-router-dom";
 
 const LoginSignUpPage = () => {
   const [isLogin, setIsLogin] = useState(true);
+
+  const signIn = useSignIn();
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -14,7 +25,7 @@ const LoginSignUpPage = () => {
           alt="graphic"
           className="aspect-square max-w-96 md:size-1/2 md:max-w-none"
         />
-        <div className="flex flex-col gap-5 w-full max-w-96">
+        <form className="flex flex-col gap-5 w-full max-w-96">
           <div className="flex flex-col text-neutral/90 text-4xl font-bold select-none">
             <h1>
               {isLogin ? "Hello there!" : "Hi there!"}
@@ -30,6 +41,7 @@ const LoginSignUpPage = () => {
             <input
               type="email"
               className="input bg-neutral/5 w-full"
+              name="email"
               placeholder="Email Address"
             />
           </fieldset>
@@ -42,6 +54,7 @@ const LoginSignUpPage = () => {
                 <input
                   type="text"
                   className="input bg-neutral/5 w-full"
+                  name="fistName"
                   placeholder="First Name"
                 />
               </fieldset>
@@ -52,6 +65,7 @@ const LoginSignUpPage = () => {
                 <input
                   type="text"
                   className="input bg-neutral/5 w-full"
+                  name="lastName"
                   placeholder="Last Name"
                 />
               </fieldset>
@@ -62,6 +76,7 @@ const LoginSignUpPage = () => {
             <input
               type="password"
               className="input bg-neutral/5 w-full"
+              name="password"
               placeholder="Password"
             />
           </fieldset>
@@ -73,6 +88,7 @@ const LoginSignUpPage = () => {
               <input
                 type="password"
                 className="input bg-neutral/5 w-full"
+                name="confirmPassword"
                 placeholder="Confirm Password"
               />
             </fieldset>
@@ -100,7 +116,7 @@ const LoginSignUpPage = () => {
               Create an account
             </button>
           )}
-        </div>
+        </form>
       </div>
       <Footer />
     </div>
