@@ -1,6 +1,7 @@
 import { PlusIcon } from "lucide-react";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import Sidebar from "./Sidebar";
 
 const Navbar = () => {
   const location = useLocation();
@@ -23,15 +24,20 @@ const Navbar = () => {
               Buzznotes
             </h1>
           </Link>
-          {
-            !currentLocation && <Link to={"/login"} className="btn btn-primary w-full max-w-40">
-            <span>Login</span>
-          </Link>
-          }
-          {currentLocation === "notes" && <Link to={"/create"} className="btn btn-primary">
-            <PlusIcon className="size-5" />
-            <span>New Buzz</span>
-          </Link>}
+          {!currentLocation && (
+            <Link to={"/login"} className="btn btn-primary w-full max-w-40">
+              <span>Login</span>
+            </Link>
+          )}
+          {currentLocation === "notes" && (
+            <Link to={"/create"} className="btn btn-primary">
+              <PlusIcon className="size-5" />
+              <span>New Buzz</span>
+            </Link>
+          )}
+          <div>
+            <Sidebar />
+          </div>
         </div>
       </div>
     </header>
