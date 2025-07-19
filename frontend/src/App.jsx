@@ -5,7 +5,8 @@ import NoteDetailPage from "./pages/NoteDetailPage";
 import NotesPage from "./pages/NotesPage";
 import HomePage from "./pages/HomePage";
 import LoginSignUpPage from "./pages/LoginSignUpPage";
-import { RequireAuth } from "react-auth-kit";
+import RequireAuth from "react-auth-kit";
+import PrivateRoutes from "./routes/PrivateRoutes";
 
 const App = () => {
   return (
@@ -16,30 +17,11 @@ const App = () => {
         <Route path="/login" element={<LoginSignUpPage />} />
 
         {/* Protected Routes */}
-        <Route
-          path="/create"
-          element={
-            <RequireAuth loginPath="/login">
-              <CreatePage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/note/:id"
-          element={
-            <RequireAuth loginPath="/login">
-              <NoteDetailPage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/notes"
-          element={
-            <RequireAuth loginPath="/login">
-              <NotesPage />
-            </RequireAuth>
-          }
-        />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/note/:id" element={<NoteDetailPage />} />
+          <Route path="/notes/create" element={<CreatePage />} />
+          <Route path="/notes" element={<NotesPage />} />
+        </Route>
 
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>

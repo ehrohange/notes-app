@@ -10,7 +10,6 @@ const Footer = () => {
           <img
             src="/icons/logo.webp"
             alt="logo"
-            srcset=""
             className="size-8 object-contain"
           />
           <h2 className="text-primary pt-2 text-xl font-semibold">Buzznotes</h2>
