@@ -8,7 +8,7 @@ const Navbar = () => {
   const currentLocation = location.pathname.split("/").filter(Boolean).pop();
 
   return (
-    <header className="border-b-base-content/10 mb-10">
+    <header className={`border-b-base-content/10 mb-10 ${currentLocation !== "login" && currentLocation !== "" && "bg-neutral"}`}>
       <div className="mx-auto max-w-6xl p-4">
         <div className="flex items-center justify-between">
           <Link to={`/`} className="flex items-center space-x-1">
@@ -29,15 +29,9 @@ const Navbar = () => {
               <span>Login</span>
             </Link>
           )}
-          {currentLocation === "notes" && (
-            <Link to={"/create"} className="btn btn-primary">
-              <PlusIcon className="size-5" />
-              <span>New Buzz</span>
-            </Link>
-          )}
-          <div>
+          {/* <div>
             <Sidebar />
-          </div>
+          </div> */}
         </div>
       </div>
     </header>

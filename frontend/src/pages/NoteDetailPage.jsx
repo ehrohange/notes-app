@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../lib/axios";
-import { ArrowLeftIcon, Loader, LoaderIcon, SaveIcon, Trash2Icon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  Loader,
+  LoaderIcon,
+  SaveIcon,
+  Trash2Icon,
+} from "lucide-react";
+import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
+import { jwtDecode } from "jwt-decode";
 
 const NoteDetailPage = () => {
   const [note, setNote] = useState(null);
@@ -13,10 +21,25 @@ const NoteDetailPage = () => {
 
   const { id } = useParams();
 
+  const token = useAuthHeader();
+
+  const jwt = token.split(" ")[1]; // Remove "Bearer " prefix
+  const decodedToken = jwtDecode(jwt);
+
   useEffect(() => {
+    if (!token) {
+      toast.error("No token found. Please login again.");
+      return;
+    }
+    console.log(id);
+    console.log("Decoded ID:", decodedToken.id);
     const fetchNote = async () => {
       try {
-        const res = await api.get(`/notes/${id}`);
+        const res = await api.get(`/notes/${decodedToken.id}/${id}`, {
+          headers: {
+            Authorization: token,
+          },
+        });
         setNote(res.data);
       } catch (error) {
         console.error("Error in fetching note: ", error);
@@ -42,7 +65,11 @@ const NoteDetailPage = () => {
     if (!window.confirm("Are you sure you want to delete this note?")) return;
 
     try {
-      await api.delete(`/notes/${id}`);
+      await api.delete(`/notes/${id}`, {
+          headers: {
+            Authorization: token,
+          },
+        });
       toast.success("Note deleted");
       navigate("/");
     } catch (error) {
@@ -58,9 +85,13 @@ const NoteDetailPage = () => {
     }
     try {
       setSaving(true);
-      await api.put(`/notes/${id}`, note);
+      await api.patch(`/notes/update/${id}`, note, {
+          headers: {
+            Authorization: token,
+          },
+        });
       toast.success("Note updated successfully!");
-      navigate("/");
+      navigate("/notes");
     } catch (error) {
       console.error("Error saving note: ", error);
       toast.error("Failed to update note.");
@@ -122,7 +153,15 @@ const NoteDetailPage = () => {
                   disabled={saving}
                   onClick={handleSave}
                 >
-                  {saving ? (<><Loader className="size-5 animate-spin" /> Saving...</>) : (<><SaveIcon className="size-5" /> Save Changes</>)}
+                  {saving ? (
+                    <>
+                      <Loader className="size-5 animate-spin" /> Saving...
+                    </>
+                  ) : (
+                    <>
+                      <SaveIcon className="size-5" /> Save Changes
+                    </>
+                  )}
                 </button>
               </div>
             </div>

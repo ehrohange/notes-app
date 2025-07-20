@@ -12,7 +12,7 @@ const Sidebar = () => {
           <MenuIcon className="text-neutral size-10" />
         </label>
       </div>
-      <div className="drawer-side">
+      <div className="drawer-side z-10">
         <label
           htmlFor="my-drawer-4"
           aria-label="close sidebar"

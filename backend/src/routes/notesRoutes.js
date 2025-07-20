@@ -11,9 +11,9 @@ router.get("/:userId/:id", authenticateUser, rateLimiter, getNoteById);
 
 router.post("/:userId", authenticateUser, rateLimiter, createNote);
 
-router.patch("update/:id", authenticateUser, rateLimiter, updateNote);
+router.patch("/update/:id", authenticateUser, rateLimiter, updateNote);
 
-router.delete("delete/:id", authenticateUser, rateLimiter, deleteNote);
+router.delete("/delete/:id", authenticateUser, rateLimiter, deleteNote);
 
 export default router;
 
