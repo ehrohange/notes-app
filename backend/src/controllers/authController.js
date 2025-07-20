@@ -14,7 +14,7 @@ export async function verifyUser(request, response) {
         message: "Link is invalid.",
       });
     }
-
+    
     const user = await User.findOne({ verificationToken: token });
 
     if (!user) {
@@ -22,12 +22,12 @@ export async function verifyUser(request, response) {
         message: "Verification is invalid or user does not exist.",
       });
     }
-
+    console.log("User exists");
     user.isVerified = true;
     user.verificationToken = "";
-
+    console.log("User verification token set to blank");
     await user.save();
-
+    console.log("User saved!");
     return response.status(200).json({
       message: "Your account has been successfully verified",
     });
@@ -56,7 +56,11 @@ export async function loginUser(req, res) {
     }
 
     if (!user.isVerified) {
-      return res.status(200).send({message: "Please verify your account before logging in. Thank you."});
+      return res
+        .status(200)
+        .send({
+          message: "Please verify your account before logging in. Thank you.",
+        });
     }
 
     const payload = {
@@ -64,7 +68,7 @@ export async function loginUser(req, res) {
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
-    }
+    };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "4h",

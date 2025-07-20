@@ -25,7 +25,6 @@ const userSchema = new mongoose.Schema(
     },
     verificationToken: {
       type: String,
-      unique: true,
       required: function () {
         return !this.isVerified;
       }

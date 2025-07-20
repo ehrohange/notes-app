@@ -23,8 +23,6 @@ const RedirectHandler = () => {
     toast.error("Invalid token.");
     return <Navigate to="/login" replace />;
   }
-
-  return <Navigate to="/login" replace />;
 };
 
 export default RedirectHandler;

@@ -27,6 +27,82 @@ const LoginSignUpPage = () => {
     return emailRegex.test(email);
   };
 
+  const clearInputs = () => {
+    setEmail("");
+    setFirstName("");
+    setLastName("");
+    setPassword("");
+    setConfirmPassword("");
+    return;
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    if (!email.trim()) {
+      toast.error("Email address is required.");
+      return;
+    }
+    if (!firstName.trim()) {
+      toast.error("First Name is required.");
+      return;
+    }
+    if (!lastName.trim()) {
+      toast.error("Last Name is required.");
+      return;
+    }
+    if (!isValidEmail(email)) {
+      toast.error("Email must be valid.");
+      return;
+    }
+    if (!password.trim()) {
+      toast.error("Password is required.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const success = await api.post(
+        "/users/create",
+        {
+          email,
+          firstName,
+          lastName,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (success) {
+        toast.success(
+          "Signed up successfully! A verification link has been sent to your email."
+        );
+        setIsLogin(true);
+        clearInputs();
+        setIsLoading(false);
+        return;
+      }
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Sorry. Something went wrong");
+      }
+      setIsLoading(false);
+      return;
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!email.trim()) {
@@ -35,6 +111,7 @@ const LoginSignUpPage = () => {
     }
     if (!isValidEmail(email)) {
       toast.error("Email must be valid.");
+      return;
     }
     if (!password.trim()) {
       toast.error("Password is required.");
@@ -73,15 +150,10 @@ const LoginSignUpPage = () => {
         setIsLoading(false);
       }
     } catch (error) {
-      console.error(error);
       toast.error(error.response.data.message || "Something went wrong.");
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    console.log(password);
-  }, [password]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -93,7 +165,7 @@ const LoginSignUpPage = () => {
           className="aspect-square max-w-96 md:size-1/2 md:max-w-none"
         />
         <form
-          onSubmit={handleLogin}
+          onSubmit={isLogin ? handleLogin : handleSignUp}
           className="flex flex-col gap-5 w-full max-w-96"
         >
           <div className="flex flex-col text-neutral/90 text-4xl font-bold select-none">
@@ -111,6 +183,7 @@ const LoginSignUpPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email Address"
+              autoComplete={isLogin ? "email" : "new-email"}
             />
           </fieldset>
           {!isLogin && (
@@ -126,6 +199,7 @@ const LoginSignUpPage = () => {
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="First Name"
+                  autoComplete={"off"}
                 />
               </fieldset>
               <fieldset className="fieldset space-y-1">
@@ -139,6 +213,7 @@ const LoginSignUpPage = () => {
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   placeholder="Last Name"
+                  autoComplete={"off"}
                 />
               </fieldset>
             </>
@@ -152,6 +227,7 @@ const LoginSignUpPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
+              autoComplete={isLogin ? "current-password" : "new-password"}
             />
           </fieldset>
           {!isLogin && (
@@ -166,6 +242,7 @@ const LoginSignUpPage = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm Password"
+                autoComplete={"off"}
               />
             </fieldset>
           )}
@@ -197,6 +274,7 @@ const LoginSignUpPage = () => {
             }`}
             onClick={() => {
               !isLogin && setIsLogin(true);
+              clearInputs();
             }}
           >
             {isLogin
@@ -206,7 +284,10 @@ const LoginSignUpPage = () => {
           {isLogin && (
             <button
               className="btn btn-neutral"
-              onClick={() => setIsLogin(false)}
+              onClick={() => {
+                setIsLogin(false);
+                clearInputs();
+              }}
             >
               Create an account
             </button>
