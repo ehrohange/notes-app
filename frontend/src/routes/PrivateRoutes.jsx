@@ -13,7 +13,7 @@ function PrivateRoutes() {
 
   try {
     const decodedToken = jwtDecode(token);
-
+    console.log(decodedToken);
     // Check for token expiration
     if (decodedToken.exp * 1000 < Date.now()) {
       return <Navigate to="/login" />;

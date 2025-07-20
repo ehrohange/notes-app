@@ -46,7 +46,7 @@ const CreatePage = () => {
     <div className="min-h-screen bg-base-200">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
-          <Link to="/" className="btn btn-ghost mb-6">
+          <Link to="/notes" className="btn btn-ghost mb-6">
             <ArrowLeftIcon className="size-5 mr-2" />
             Back to Notes
           </Link>

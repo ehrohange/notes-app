@@ -55,14 +55,6 @@ const LoginSignUpPage = () => {
         return;
       }
 
-      // const success = signIn({
-      //   auth: {
-      //     token: data.token,
-      //     type: "Bearer",
-      //   },
-      //   expiresIn: 4 * 60,
-      // });
-
       const success = signIn({
         auth: {
           token: data.token,
@@ -74,7 +66,7 @@ const LoginSignUpPage = () => {
 
       if (success) {
         toast.success("Logged in successfully!");
-        navigate("/");
+        navigate("/notes");
         setIsLoading(false);
       } else {
         toast.error("Login failed.");
