@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { PenSquareIcon, Trash2Icon } from "lucide-react";
 import { formatDate } from "../lib/utils";
@@ -8,6 +8,7 @@ import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 
 const NoteCard = ({ note, setNotes }) => {
   const token = useAuthHeader();
+  const [isLoading, setIsLoading] = useState(false);
   const handleDelete = async (e, id) => {
     e.preventDefault();
 
@@ -18,7 +19,7 @@ const NoteCard = ({ note, setNotes }) => {
         toast.error("No token found. Please login again.");
         return;
       }
-
+      setIsLoading(true);
       await api.delete(`/notes/delete/${id}`, {
         headers: {
           Authorization: token,
@@ -27,9 +28,11 @@ const NoteCard = ({ note, setNotes }) => {
 
       setNotes((prev) => prev.filter((note) => note._id !== id));
       toast.success("Note deleted successfully!");
+      setIsLoading(false);
     } catch (error) {
-      console.error("Error deleting note: ", error);
       toast.error("Failed to delete note.");
+      setIsLoading(false);
+      return;
     }
   };
 
@@ -51,10 +54,16 @@ const NoteCard = ({ note, setNotes }) => {
           <div className="flex items-center gap-1">
             <PenSquareIcon className="size-4" />
             <button
-              className="btn btn-ghost btn-xs text-error"
+              className="btn btn-ghost btn-xs text-error text-xs"
               onClick={(e) => handleDelete(e, note._id)}
             >
-              <Trash2Icon className="size-4" />
+              {
+                isLoading ? (
+                  <><span className="loading loading-spinner loading-sm"></span> Deleting...</>
+                ) : (
+                  <Trash2Icon className="size-4" />
+                )
+              }
             </button>
           </div>
         </div>

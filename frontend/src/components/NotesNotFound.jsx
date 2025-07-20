@@ -10,8 +10,8 @@ const NotesNotFound = () => {
       </div>
       <h3 className="text-2xl font-bold text-base-content/90">No notes yet</h3>
       <p className="text-base-content/70">
-        Ready to organize your thoughts? Create your first note to get started
-        on your journey.
+        🐝 Buzz into productivity! Create your first note and let your ideas
+        take flight with Buzznotes. 📝
       </p>
       <Link to="/notes/create" className="btn btn-primary">
         Create Your First Note

@@ -4,6 +4,10 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../lib/axios";
+import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
+import { jwtDecode } from "jwt-decode";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const CreatePage = () => {
   const [title, setTitle] = useState("");
@@ -12,8 +16,17 @@ const CreatePage = () => {
 
   const navigate = useNavigate();
 
+  const token = useAuthHeader();
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!token) {
+      toast.error("No token found. Please login again.");
+      return;
+    }
+
+    const jwt = token.split(" ")[1];
+    const decodedToken = jwtDecode(jwt);
 
     if (!title.trim() || !content.trim()) {
       toast.error("All fields are required!");
@@ -21,13 +34,22 @@ const CreatePage = () => {
     }
 
     setIsLoading(true);
+
     try {
-      await api.post("/notes", {
-        title,
-        content,
-      });
+      await api.post(
+        `/notes/${decodedToken.id}`,
+        {
+          title,
+          content,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
       toast.success("Note created successfully!");
-      navigate("/");
+      navigate("/notes");
     } catch (error) {
       if (error.response.status === 429) {
         toast.error("Slow down! You're creating notes too fast!", {
@@ -43,8 +65,9 @@ const CreatePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-base-200">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-base-200 flex flex-col">
+      <Navbar />
+      <div className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           <Link to="/notes" className="btn btn-ghost mb-6">
             <ArrowLeftIcon className="size-5 mr-2" />
@@ -83,7 +106,7 @@ const CreatePage = () => {
                     className="btn btn-primary"
                     disabled={isLoading}
                   >
-                    {isLoading ? "Creating..." : "Create Note"}
+                    {isLoading ? (<span className="flex items-center gap-1"><span className="loading loading-spinner loading-sm"></span><span>Creating...</span></span>) : "Create Note"}
                   </button>
                 </div>
               </form>
@@ -91,6 +114,7 @@ const CreatePage = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

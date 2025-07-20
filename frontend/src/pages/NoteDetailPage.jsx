@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import { jwtDecode } from "jwt-decode";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 
 const NoteDetailPage = () => {
   const [note, setNote] = useState(null);
@@ -31,8 +33,6 @@ const NoteDetailPage = () => {
       toast.error("No token found. Please login again.");
       return;
     }
-    console.log(id);
-    console.log("Decoded ID:", decodedToken.id);
     const fetchNote = async () => {
       try {
         const res = await api.get(`/notes/${decodedToken.id}/${id}`, {
@@ -42,7 +42,6 @@ const NoteDetailPage = () => {
         });
         setNote(res.data);
       } catch (error) {
-        console.error("Error in fetching note: ", error);
         toast.error("Failed to fetch the note.");
       } finally {
         setIsLoading(false);
@@ -51,12 +50,10 @@ const NoteDetailPage = () => {
     fetchNote();
   }, [id]);
 
-  console.log({ note });
-
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-base-200 flex items-center justify-center">
-        <LoaderIcon className="animate-spin size-10" />
+      <div className="min-h-screen bg-base-100 flex items-center justify-center">
+        <span className="loading loading-dots loading-lg"></span>
       </div>
     );
   }
@@ -65,15 +62,14 @@ const NoteDetailPage = () => {
     if (!window.confirm("Are you sure you want to delete this note?")) return;
 
     try {
-      await api.delete(`/notes/${id}`, {
-          headers: {
-            Authorization: token,
-          },
-        });
+      await api.delete(`/notes/delete/${id}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
       toast.success("Note deleted");
-      navigate("/");
+      navigate("/notes");
     } catch (error) {
-      console.error("Error deleting note:", error);
       toast.error("Error in deleting note.");
     }
   };
@@ -86,14 +82,13 @@ const NoteDetailPage = () => {
     try {
       setSaving(true);
       await api.patch(`/notes/update/${id}`, note, {
-          headers: {
-            Authorization: token,
-          },
-        });
+        headers: {
+          Authorization: token,
+        },
+      });
       toast.success("Note updated successfully!");
       navigate("/notes");
     } catch (error) {
-      console.error("Error saving note: ", error);
       toast.error("Failed to update note.");
     } finally {
       setSaving(false);
@@ -101,11 +96,12 @@ const NoteDetailPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-base-200">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen flex flex-col bg-base-200">
+      <Navbar />
+      <div className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center justify-between mb-6">
-            <Link to="/" className="btn btn-ghost mb-6">
+            <Link to="/notes" className="btn btn-ghost">
               <ArrowLeftIcon className="size-5 mr-2" />
               Back to Notes
             </Link>
@@ -155,7 +151,8 @@ const NoteDetailPage = () => {
                 >
                   {saving ? (
                     <>
-                      <Loader className="size-5 animate-spin" /> Saving...
+                      <span className="loading loading-spinner loading-sm"></span>{" "}
+                      Saving...
                     </>
                   ) : (
                     <>
@@ -168,6 +165,7 @@ const NoteDetailPage = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

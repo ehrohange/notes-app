@@ -24,9 +24,8 @@ const NotesPage = () => {
       return;
     }
 
-    const jwt = token.split(" ")[1]; // Remove "Bearer " prefix
+    const jwt = token.split(" ")[1];
     const decodedToken = jwtDecode(jwt);
-    console.log("Decoded ID:", decodedToken.id);
 
     const fetchNotes = async () => {
       try {
@@ -35,12 +34,10 @@ const NotesPage = () => {
             Authorization: token,
           },
         });
-        console.log(res.data);
         setNotes(res.data);
         setLoading(false);
         setIsRateLimited(false);
       } catch (error) {
-        console.error("Error fetching notes:", error);
         if (error.response && error.response.status === 429) {
           setIsRateLimited(true);
         } else {
@@ -57,7 +54,7 @@ const NotesPage = () => {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       {isRateLimited && <RateLimitedUI />}
-      <div className="max-w-7xl flex-grow mx-auto w-full p-4 mt-6">
+      <div className="max-w-7xl flex-grow mx-auto w-full p-4">
         {loading && (
           <>
             <div className="w-full mb-4 flex justify-between">
@@ -78,7 +75,7 @@ const NotesPage = () => {
         {notes.length > 0 && !loading && !isRateLimited && (
           <>
             <div className="w-full mb-4 flex justify-between">
-              <span className="text-neutral/90 text-4xl font-bold select-none border-2 flex flex-row items-center gap-2">
+              <span className="text-neutral/90 text-4xl font-bold select-none flex flex-row items-center gap-[6px]">
                 <NotebookTabsIcon className="relative size-8" /> My Notes
               </span>
               <Link to={"/notes/create"} className="btn btn-primary font-bold">

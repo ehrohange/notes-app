@@ -6,14 +6,12 @@ import toast from "react-hot-toast";
 function PrivateRoutes() {
   const token = useAuthHeader();
 
-  console.log(token);
   if (!token) {
     return <Navigate to="/login" />;
   }
 
   try {
     const decodedToken = jwtDecode(token);
-    console.log(decodedToken);
     // Check for token expiration
     if (decodedToken.exp * 1000 < Date.now()) {
       return <Navigate to="/login" />;

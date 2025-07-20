@@ -7,14 +7,18 @@ import HomePage from "./pages/HomePage";
 import LoginSignUpPage from "./pages/LoginSignUpPage";
 import RequireAuth from "react-auth-kit";
 import PrivateRoutes from "./routes/PrivateRoutes";
+import HideLoginAndHomeRoutes from "./routes/HideLoginAndHomeRoutes";
 
 const App = () => {
   return (
     <div className="relative h-full w-full">
       <div className="absolute inset-0 -z-10 h-full w-full items-center px-5 py-24 bg-white"></div>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginSignUpPage />} />
+        {/* Unprotected Routes */}
+        <Route element={<HideLoginAndHomeRoutes />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginSignUpPage />} />
+        </Route>
 
         {/* Protected Routes */}
         <Route element={<PrivateRoutes />}>

@@ -41,8 +41,6 @@ export async function createUser(req, res) {
 
     const verificationToken = crypto.randomBytes(32).toString("hex");
 
-    console.log("Sending email to: ", email);
-
     const verificationLink = `http://localhost:3000/api/auth/verify?token=${verificationToken}`;
 
     await sendEmail(
