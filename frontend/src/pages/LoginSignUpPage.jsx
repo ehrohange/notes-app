@@ -129,6 +129,7 @@ const LoginSignUpPage = () => {
 
       if (data.message && data.token === undefined) {
         toast.error(data.message);
+        setIsLoading(false);
         return;
       }
 

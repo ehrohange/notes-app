@@ -54,7 +54,7 @@ const NotesPage = () => {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       {isRateLimited && <RateLimitedUI />}
-      <div className="max-w-7xl flex-grow mx-auto w-full p-4">
+      <div className="max-w-7xl min-h-screen md:min-h-0 flex-grow mx-auto w-full p-4">
         {loading && (
           <>
             <div className="w-full mb-4 flex justify-between">
@@ -75,8 +75,8 @@ const NotesPage = () => {
         {notes.length > 0 && !loading && !isRateLimited && (
           <>
             <div className="w-full mb-4 flex justify-between">
-              <span className="text-neutral/90 text-4xl font-bold select-none flex flex-row items-center gap-[6px]">
-                <NotebookTabsIcon className="relative size-8" /> My Notes
+              <span className="text-neutral/90 text-3xl md:text-4xl font-bold select-none flex flex-row items-center gap-[4px] md:gap-[6px]">
+                <NotebookTabsIcon className="relative size-6 md:size-8" /> My Notes
               </span>
               <Link to={"/notes/create"} className="btn btn-primary font-bold">
                 <PlusIcon /> New Note
