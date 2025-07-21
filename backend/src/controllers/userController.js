@@ -36,17 +36,31 @@ export async function createUser(req, res) {
     if (existing) {
       return res.status(400).json({ message: "Email is already in use." });
     }
+    const environment = process.env.NODE_ENV;
+
+    const getUrlPrefix = () => {
+      if (environment === "production") {
+        return process.env.CLIENT_URL;
+      } else {
+        return "http://localhost:3000";
+      }
+    }
+
+    const urlPrefix = getUrlPrefix();
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const verificationToken = crypto.randomBytes(32).toString("hex");
 
-    const verificationLink = `http://localhost:3000/api/auth/verify?token=${verificationToken}`;
+    const verificationLink = `${urlPrefix}/api/auth/verify?token=${verificationToken}`;
 
     await sendEmail(
       email,
       "Verify your account",
-      `<p>Click <a href="${verificationLink}">here</a> to verify your account.</p>`
+      `<h4>Hello, there! Welcome to Buzznotes!</h4>
+      <p><strong>You've got one more step on your account creation:</strong></p>
+      <p>Click <a href="${verificationLink}"><button style="background-color: blue; color: white; padding: 6px; border: 0; border-radius: 3px;">here</button></a> to verify your account.</p>
+      <p>If this wasn't you, ignore this email.</p>`
     );
 
     const newUser = await User.create({
