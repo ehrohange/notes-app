@@ -96,12 +96,12 @@ const NoteDetailPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-base-200">
+    <div className="min-h-screen flex flex-col bg-primary/10">
       <Navbar />
       <div className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center justify-between mb-6">
-            <Link to="/notes" className="btn btn-ghost">
+            <Link to="/notes" className="btn btn-ghost text-neutral/90">
               <ArrowLeftIcon className="size-5 mr-2" />
               Back to Notes
             </Link>
@@ -114,7 +114,7 @@ const NoteDetailPage = () => {
             </button>
           </div>
 
-          <div className="card bg-base-100">
+          <div className="card bg-base-100 border-b-4 border-base-200">
             <div className="card-body">
               <div className="form-control mb-4">
                 <label className="label">

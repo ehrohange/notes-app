@@ -65,17 +65,17 @@ const CreatePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-base-200 flex flex-col">
+    <div className="min-h-screen bg-primary/10 flex flex-col">
       <Navbar />
       <div className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
-          <Link to="/notes" className="btn btn-ghost mb-6">
+          <Link to="/notes" className="btn btn-ghost mb-6 text-neutral/90">
             <ArrowLeftIcon className="size-5 mr-2" />
             Back to Notes
           </Link>
-          <div className="card bg-base-100">
+          <div className="card bg-base-100 border-b-4 border-base-200">
             <div className="card-body">
-              <h2 className="card-title text-2xl mb-4">Create New Note</h2>
+              <h2 className="card-title text-neutral/90 text-2xl mb-4">Create New Note</h2>
               <form onSubmit={handleSubmit}>
                 <div className="form-control mb-4">
                   <label className="label">
