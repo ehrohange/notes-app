@@ -28,7 +28,7 @@ const Navbar = () => {
             </h1>
           </Link>
           {!currentLocation && (
-            <Link to={"/login"} className="btn btn-primary w-full max-w-40">
+            <Link to={"/login"} className="btn btn-primary w-full max-w-32">
               <span>Login</span>
             </Link>
           )}
