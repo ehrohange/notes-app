@@ -1,15 +1,36 @@
-import { MenuIcon } from "lucide-react";
+import { MenuIcon, User, User2, User2Icon } from "lucide-react";
 import useSignOut from "react-auth-kit/hooks/useSignOut";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
+import { jwtDecode } from "jwt-decode";
+import { useState } from "react";
 
 const Sidebar = () => {
   const signOut = useSignOut();
   const navigate = useNavigate();
+  const token = useAuthHeader();
+
+  const [decodedToken, setDecodedToken] = React.useState(null);
+
+  useEffect(() => {
+    const decodeToken = () => {
+      if (!token) return;
+      try {
+        const decoded = jwtDecode(token);
+        setDecodedToken(decoded);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    decodeToken();
+  }, [token]);
+
   const handleLogout = () => {
     signOut();
     navigate("/");
   };
+
   return (
     <div className="relative drawer drawer-end">
       {/* ✅ Single controlling checkbox for both drawer and icon swap */}
@@ -55,9 +76,25 @@ const Sidebar = () => {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+        <ul className="menu bg-base-200 text-neutral/90 font-medium text-base-content min-h-full w-80 p-4 space-y-2 pt-6">
+          <li className="text-neutral/90 text-xl w-full overflow-hidden font-semibold py-1 pl-1 flex items-center gap-2 flex-nowrap flex-row mb-6">
+            <User2Icon className="size-6 p-0 text-accent" />
+            <span className="pt-1 px-0 pb-0 w-60 overflow-hidden whitespace-nowrap truncate ">
+              {!decodedToken ? "User" : decodedToken.firstName}
+            </span>
+          </li>
+          <li className="w-full">
+            <Link to={"/"} className="w-full hover:bg-neutral/40 hover:text-white">
+              <span className="text-lg pl-2 py-1">Settings</span>
+            </Link>
+          </li>
+          <li className="w-full">
+            <Link to={"/"} className="w-full hover:bg-neutral/40 hover:text-white">
+              <span className="text-lg pl-2 py-1">Settings</span>
+            </Link>
+          </li>
           <li onClick={handleLogout}>
-            <span className="bg-red-600 text-white pl-6 py-3 hover:bg-red-500 transition-colors duration-200">
+            <span className="text-lg hover:text-white pl-6 py-3 hover:bg-red-500 transition-colors duration-200">
               Logout
             </span>
           </li>
