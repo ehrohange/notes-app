@@ -8,6 +8,7 @@ import LoginSignUpPage from "./pages/LoginSignUpPage";
 import RequireAuth from "react-auth-kit";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import HideLoginAndHomeRoutes from "./routes/HideLoginAndHomeRoutes";
+import UserSettingsPage from "./pages/UserSettingsPage";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
 
         {/* Protected Routes */}
         <Route element={<PrivateRoutes />}>
+          <Route path="/settings" element={<UserSettingsPage />} />
           <Route path="/note/:id" element={<NoteDetailPage />} />
           <Route path="/notes/create" element={<CreatePage />} />
           <Route path="/notes" element={<NotesPage />} />
