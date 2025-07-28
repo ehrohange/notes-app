@@ -84,12 +84,7 @@ const Sidebar = () => {
             </span>
           </li>
           <li className="w-full">
-            <Link to={"/"} className="w-full hover:bg-neutral/40 hover:text-white">
-              <span className="text-lg pl-2 py-1">Settings</span>
-            </Link>
-          </li>
-          <li className="w-full">
-            <Link to={"/"} className="w-full hover:bg-neutral/40 hover:text-white">
+            <Link to={"/settings"} className="w-full hover:bg-neutral/40 hover:text-white">
               <span className="text-lg pl-2 py-1">Settings</span>
             </Link>
           </li>
