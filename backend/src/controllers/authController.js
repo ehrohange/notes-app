@@ -5,39 +5,39 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export async function verifyUser(request, response) {
-  try {
-    const token = request.query.token;
+// export async function verifyUser(request, response) {
+//   try {
+//     const token = request.query.token;
 
-    if (!token) {
-      return response.status(400).json({
-        message: "Link is invalid.",
-      });
-    }
+//     if (!token) {
+//       return response.status(400).json({
+//         message: "Link is invalid.",
+//       });
+//     }
     
-    const user = await User.findOne({ verificationToken: token });
+//     const user = await User.findOne({ verificationToken: token });
 
-    if (!user) {
-      return response.status(404).json({
-        message: "Verification is invalid or user does not exist.",
-      });
-    }
-    console.log("User exists");
-    user.isVerified = true;
-    user.verificationToken = "";
-    console.log("User verification token set to blank");
-    await user.save();
-    console.log("User saved!");
-    return response.status(200).json({
-      message: "Your account has been successfully verified",
-    });
-  } catch (error) {
-    console.error(error);
-    return response
-      .status(400)
-      .json({ message: "There was an error verifying user account." });
-  }
-}
+//     if (!user) {
+//       return response.status(404).json({
+//         message: "Verification is invalid or user does not exist.",
+//       });
+//     }
+//     console.log("User exists");
+//     user.isVerified = true;
+//     user.verificationToken = "";
+//     console.log("User verification token set to blank");
+//     await user.save();
+//     console.log("User saved!");
+//     return response.status(200).json({
+//       message: "Your account has been successfully verified",
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     return response
+//       .status(400)
+//       .json({ message: "There was an error verifying user account." });
+//   }
+// }
 
 export async function loginUser(req, res) {
   const { email, password } = req.body;
@@ -53,14 +53,6 @@ export async function loginUser(req, res) {
 
     if (!validPassword) {
       return res.status(400).send({ message: "Invalid password." });
-    }
-
-    if (!user.isVerified) {
-      return res
-        .status(200)
-        .send({
-          message: "Please verify your account before logging in. Thank you.",
-        });
     }
 
     const payload = {

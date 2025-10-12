@@ -80,7 +80,7 @@ const LoginSignUpPage = () => {
       );
       if (success) {
         toast.success(
-          "Signed up successfully! A verification link has been sent to your email."
+          "Signed up successfully!"
         );
         setIsLogin(true);
         clearInputs();
